@@ -1,0 +1,117 @@
+/* General Body Styling */
+body {
+    background-color: #f9f9f9;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Container for Student Management */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+/* Header Styling */
+h1 {
+    text-align: center;
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+/* Form Styling */
+.form-control {
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.mb-3 {
+    margin-bottom: 20px;
+}
+
+/* Button Styling */
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-warning {
+    background-color: #f0ad4e;
+    color: #fff;
+    border: none;
+}
+
+.btn-warning:hover {
+    background-color: #ec971f;
+}
+
+.btn-info {
+    background-color: #5bc0de;
+    color: #fff;
+    border: none;
+}
+
+.btn-info:hover {
+    background-color: #31b0d5;
+}
+
+.btn-success {
+    background-color: #5cb85c;
+    color: #fff;
+}
+
+.btn-danger {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+/* Table Styling */
+.table {
+    width: 100%;
+    margin-top: 40px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f5f5f5;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Attendance Summary Styling */
+#attendance-summary {
+    background-color: #e9ecef;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#attendance-summary p {
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 10px;
+    text-align: center;
+}

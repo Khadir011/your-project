@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Management</title>
+    <style>
+    /* General Body Styling */
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Arial', sans-serif;
+    }
+    
+    /* Container for Student Management */
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color:silver;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+    }
+    
+    /* Header Styling */
+    h1 {
+        text-align: center;
+        text-decoration:wavy;
+        color:white;
+        font-weight: 700;
+        margin-bottom: 30px;
+        font-size: 3rem;
+      
+    }
+    
+    /* Form Styling */
+    .form-control {
+        padding: 20px;
+        width: 500px;
+        height: 20px;
+        border-radius: 5px;
+        border: 5px solid #ccc;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .mb-3 {
+        margin-bottom: 20px;
+    }
+    
+    /* Button Styling */
+    .btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .btn-warning {
+        background-color: #f0ad4e;
+        color: #fff;
+        border: none;
+        margin-bottom: 20px;
+        font-size: larger;
+       
+        
+    }
+    
+    .btn-warning:hover {
+        background-color: #ec971f;
+       
+    }
+    
+    .btn-info {
+        background-color: #5bc0de;
+        color: #fff;
+        border: none;
+        font-size:larger;
+    }
+    
+    .btn-info:hover {
+        background-color: #31b0d5;
+    }
+    
+    .btn-success {
+        background-color: #5cb85c;
+        color: #fff;
+    }
+    
+    .btn-danger {
+        background-color: #d9534f;
+        color: #fff;
+    }
+    
+    /* Table Styling */
+    .table {
+        width: 100%;
+        margin-top: 40px;
+        border-collapse: collapse;
+    }
+    
+    .table th, .table td {
+        padding: 15px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+    
+    .table th {
+        background-color: #f5f5f5;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #555;
+    }
+    
+    .table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    
+    /* Attendance Summary Styling */
+    #attendance-summary {
+        background-color: #e9ecef;
+        padding: 20px;
+        margin-top: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    #attendance-summary p {
+        font-size: 1.1rem;
+        color: #333;
+        font-weight: 500;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    
+</style> 
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="studentData">
+            <h1>STUDENT MANAGEMENT SYSTEM</h1>
+            <form id="form1">
+                <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Name" id="name" required>
+                </div>
+                <div class="mb-3">
+                    <input type="number" class="form-control" placeholder="Number" id="number" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="City" id="city" required>
+                </div>
+                <div class="mb-3">
+                    <input type="number" class="form-control" placeholder="Roll No" id="rollNo" required>
+                </div>
+                <input type="submit" class="btn btn-warning" value="Submit">
+            </form>
+        </div>
+
+        <!-- Button to fetch attendance summary -->
+        <div class="mt-3">
+            <button id="attendance-summary-btn" class="btn btn-info">Show Attendance Summary</button>
+        </div>
+
+        <!-- Table to display student data -->
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Number</th>
+                    <th>City</th>
+                    <th>Roll No.</th>
+                    <th>Attendance</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <!-- Table rows will be dynamically inserted here -->
+            </tbody>
+        </table>
+
+        <!-- Container to display attendance summary -->
+        <div id="attendance-summary" class="mt-3">
+            <!-- Attendance summary will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        document.querySelector("#form1").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const name = document.querySelector("#name").value;
+            const number = document.querySelector("#number").value;
+            const city = document.querySelector("#city").value;
+            const rollNo = document.querySelector("#rollNo").value;
+
+            if (name && number && city && rollNo) {
+                fetch('/add-student', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, number, city, rollNo })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Student data stored successfully') {
+                        alert('Student added successfully');
+                        addStudentToTable(data.id, name, number, city, rollNo);
+                        document.querySelector("#form1").reset();
+                    } else {
+                        alert(data.message || 'An error occurred');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred');
+                });
+            } else {
+                alert("All fields are required");
+            }
+        });
+
+        function addStudentToTable(id, name, number, city, rollNo) {
+            const tbody = document.querySelector("#tbody");
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${id}</td>
+                <td>${name}</td>
+                <td>${number}</td>
+                <td>${city}</td>
+                <td>${rollNo}</td>
+                <td>
+                    <button class="btn btn-success btn-sm attendance-btn" data-id="${id}" data-status="present">Present</button>
+                    <button class="btn btn-danger btn-sm attendance-btn" data-id="${id}" data-status="absent">Absent</button>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        }
+
+        // Handle attendance button clicks
+        document.querySelector("#tbody").addEventListener("click", function(event) {
+            if (event.target.classList.contains("attendance-btn")) {
+                const button = event.target;
+                const studentId = button.getAttribute("data-id");
+                const status = button.getAttribute("data-status");
+
+                fetch('/update-attendance', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: studentId, status })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Attendance updated successfully') {
+                        alert('Attendance updated');
+                    } else {
+                        alert(data.message || 'An error occurred');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred');
+                });
+            }
+        });
+
+        // Fetch and display attendance summary
+        document.querySelector("#attendance-summary-btn").addEventListener("click", function() {
+            fetch('/attendance-summary')
+                .then(response => response.json())
+                .then(data => {
+                    const summaryDiv = document.querySelector("#attendance-summary");
+                    summaryDiv.innerHTML = `
+                        <p><strong>Present:</strong> ${data.present}</p>
+                        <p><strong>Absent:</strong> ${data.absent}</p>
+                    `;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        // Load existing students when the page loads
+        window.addEventListener('load', function() {
+            fetch('/students')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(student => {
+                        addStudentToTable(student.id, student.name, student.number, student.city, student.roll_no);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
